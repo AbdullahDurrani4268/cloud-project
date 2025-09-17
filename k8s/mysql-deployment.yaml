@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: mysql:8.0
+          image: us.icr.io/durrani/mysql:8.0
           ports:
             - containerPort: 3306
           env:
@@ -54,6 +54,8 @@ spec:
           volumeMounts:
             - name: mysql-pv-storage
               mountPath: /var/lib/mysql
+      imagePullSecrets:
+        - name: icr-secret
       volumes:
         - name: mysql-pv-storage
           persistentVolumeClaim:
