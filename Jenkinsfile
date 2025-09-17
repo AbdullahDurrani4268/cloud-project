@@ -1,12 +1,17 @@
 pipeline {
-    agent any
-    
+    agent {
+        docker {
+            image 'docker:24.0'   // Docker client image
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
+
     environment {
         REGISTRY = "us.icr.io/durrani"
         IMAGE = "node-app"
         KUBECONFIG_CRED = 'kubeconfig'
     }
-    
+
     stages {
         stage('Checkout') {
             steps {
@@ -16,9 +21,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    sh "docker build -t $REGISTRY/$IMAGE:${BUILD_NUMBER} ."
-                }
+                sh "docker build -t $REGISTRY/$IMAGE:${BUILD_NUMBER} ."
             }
         }
 
